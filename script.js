@@ -468,5 +468,95 @@ nextMonthBtn.addEventListener('click', () => {
     renderCalendar();
 });
 
-// Inicializar
-renderCalendar();
+// --- Lógica del Marketplace (Trade Center) ---
+const userListingsGrid = document.getElementById('userListingsGrid');
+const listModal = document.getElementById('listModal');
+const openListModalBtn = document.getElementById('openListModal');
+const closeListModalBtn = document.getElementById('closeListModal');
+const listingForm = document.getElementById('listingForm');
+
+// Cargar anuncios de la comunidad (desde localStorage para simular persistencia local)
+let userListings = JSON.parse(localStorage.getItem('sneakerListings')) || [];
+
+function renderMarketplace() {
+    if (userListings.length === 0) {
+        userListingsGrid.innerHTML = '<div class="empty-state"><p>Aún no hay ofertas de la comunidad. ¡Sé el primero!</p></div>';
+        return;
+    }
+
+    userListingsGrid.innerHTML = '';
+    userListings.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'user-card';
+        card.innerHTML = `
+            <div class="condition-badge">${item.condition}</div>
+            <h4>${item.name}</h4>
+            <div class="item-details">
+                <div class="detail-group">
+                    <span class="detail-label">Talla</span>
+                    <span class="detail-value">${item.size} US</span>
+                </div>
+                <div class="detail-group">
+                    <span class="detail-label">Precio</span>
+                    <span class="detail-value">${item.price}€</span>
+                </div>
+            </div>
+            <div class="card-actions">
+                <a href="https://wa.me/${item.contact}?text=Hola, estoy interesado en tus ${item.name}" target="_blank" class="btn-mini btn-offer">Hacer Oferta</a>
+                <a href="https://wa.me/${item.contact}?text=Hola, ¿te interesaría un cambio por tus ${item.name}?" target="_blank" class="btn-mini btn-trade">Proponer Cambio</a>
+            </div>
+            <button class="delete-listing" onclick="deleteListing(${index})" style="background:none; border:none; color:#555; font-size:0.7rem; margin-top:10px; cursor:pointer;">Eliminar mi anuncio</button>
+        `;
+        userListingsGrid.appendChild(card);
+    });
+}
+
+// Abrir/Cerrar Modal
+if (openListModalBtn) {
+    openListModalBtn.addEventListener('click', () => listModal.style.display = 'flex');
+}
+if (closeListModalBtn) {
+    closeListModalBtn.addEventListener('click', () => listModal.style.display = 'none');
+}
+
+window.addEventListener('click', (e) => {
+    if (e.target === listModal) listModal.style.display = 'none';
+});
+
+// Guardar nuevo anuncio
+listingForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if (userListings.length >= 3) {
+        alert('Has alcanzado el límite de 3 artículos permitidos.');
+        return;
+    }
+
+    const newListing = {
+        name: document.getElementById('itemName').value,
+        size: document.getElementById('itemSize').value,
+        price: document.getElementById('itemPrice').value,
+        condition: document.getElementById('itemCondition').value,
+        contact: document.getElementById('itemContact').value
+    };
+
+    userListings.push(newListing);
+    localStorage.setItem('sneakerListings', JSON.stringify(userListings));
+
+    renderMarketplace();
+    listingForm.reset();
+    listModal.style.display = 'none';
+    alert('¡Tu zapatilla ha sido publicada en el Marketplace!');
+});
+
+// Función para eliminar (solo para que el usuario pueda limpiar sus pruebas)
+window.deleteListing = function (index) {
+    if (confirm('¿Seguro que quieres eliminar este anuncio?')) {
+        userListings.splice(index, 1);
+        localStorage.setItem('sneakerListings', JSON.stringify(userListings));
+        renderMarketplace();
+    }
+};
+
+// Render inicial del marketplace
+renderMarketplace();

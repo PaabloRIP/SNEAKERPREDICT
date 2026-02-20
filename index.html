@@ -18,6 +18,7 @@
             <div class="logo">SNEAK<span>PREDICT</span></div>
             <ul class="nav-links">
                 <li><a href="#lanzamientos" class="active">Lanzamientos</a></li>
+                <li><a href="#marketplace">Marketplace</a></li>
                 <li><a href="#analisis">Análisis</a></li>
                 <li><a href="#plataformas">Plataformas</a></li>
             </ul>
@@ -208,6 +209,23 @@
             </div>
         </section>
 
+        <section id="marketplace" class="marketplace container">
+            <div class="marketplace-header">
+                <div class="header-text">
+                    <h2>Community Trade Center</h2>
+                    <p>Espacio exclusivo para usuarios. Compra, vende o intercambia tus pares.</p>
+                </div>
+                <button class="btn-primary" id="openListModal">Subir mi Zapatilla</button>
+            </div>
+
+            <div class="user-listings-grid" id="userListingsGrid">
+                <!-- Se llenará dinámicamente -->
+                <div class="empty-state">
+                    <p>Aún no hay ofertas de la comunidad. ¡Sé el primero!</p>
+                </div>
+            </div>
+        </section>
+
         <section id="calculadora" class="calculadora container">
             <div class="calculator-card">
                 <div class="calc-header">
@@ -246,6 +264,39 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal para Subir Producto (Marketplace) -->
+    <div id="listModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeListModal">&times;</span>
+            <div class="modal-header">
+                <h3>Subir Producto al Marketplace</h3>
+                <p>Recuerda: Máximo 3 artículos por usuario.</p>
+            </div>
+            <form id="listingForm" class="vip-form">
+                <div class="form-row">
+                    <input type="text" id="itemName" placeholder="Modelo de la zapatilla (ej: Jordan 4 SB Pine Green)"
+                        required>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="itemSize" placeholder="Talla (US)" required>
+                    <input type="number" id="itemPrice" placeholder="Precio (€)" required>
+                </div>
+                <div class="form-row">
+                    <select id="itemCondition" required>
+                        <option value="" disabled selected>Estado del par</option>
+                        <option value="DS">Deadstock (Nuevo)</option>
+                        <option value="VNDS">VNDS (Casi nuevo)</option>
+                        <option value="USED">Usado</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="itemContact" placeholder="Tu número de WhatsApp (ej: 34600...)" required>
+                </div>
+                <button type="submit" class="btn-primary">Publicar Anuncio</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Modal de Suscripción VIP -->
     <div id="alertModal" class="modal">
