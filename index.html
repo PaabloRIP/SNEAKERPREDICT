@@ -293,7 +293,18 @@
                 <div class="form-row">
                     <input type="text" id="itemContact" placeholder="Tu número de WhatsApp (ej: 34600...)" required>
                 </div>
-                <button type="submit" class="btn-primary">Publicar Anuncio</button>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label
+                        style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 0.5rem;">Fotos
+                        del producto (URLs de imagen)</label>
+                    <input type="text" id="itemImg1" placeholder="URL Foto Principal (Obligatoria)" required
+                        style="width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 0.8rem; border-radius: 8px; color: white; margin-bottom: 0.5rem;">
+                    <div class="form-row">
+                        <input type="text" id="itemImg2" placeholder="URL Foto 2 (Opcional)">
+                        <input type="text" id="itemImg3" placeholder="URL Foto 3 (Opcional)">
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary" style="margin-top: 1rem;">Publicar Anuncio</button>
             </form>
         </div>
     </div>

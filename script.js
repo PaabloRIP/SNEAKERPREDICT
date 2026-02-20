@@ -488,8 +488,22 @@ function renderMarketplace() {
     userListings.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = 'user-card';
+
+        // Preparar las miniaturas si existen múltiples imágenes
+        let images = [item.img1, item.img2, item.img3].filter(img => img && img.trim() !== "");
+        let thumbnailsHTML = '';
+        if (images.length > 1) {
+            thumbnailsHTML = `<div class="img-thumbnails">` +
+                images.map((img, i) => `<img src="${img}" class="thumb ${i === 0 ? 'active' : ''}" onmouseover="changeCardImage(this, '${img}')">`).join('') +
+                `</div>`;
+        }
+
         card.innerHTML = `
             <div class="condition-badge">${item.condition}</div>
+            <div class="user-card-img-container">
+                <img src="${item.img1}" alt="${item.name}" class="user-card-img" id="main-img-${index}">
+            </div>
+            ${thumbnailsHTML}
             <h4>${item.name}</h4>
             <div class="item-details">
                 <div class="detail-group">
@@ -510,6 +524,17 @@ function renderMarketplace() {
         userListingsGrid.appendChild(card);
     });
 }
+
+// Función para cambiar la imagen al pasar el ratón por las miniaturas
+window.changeCardImage = function (thumb, newSrc) {
+    const container = thumb.closest('.user-card');
+    const mainImg = container.querySelector('.user-card-img');
+    mainImg.src = newSrc;
+
+    // Actualizar clase active en miniaturas
+    container.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+    thumb.classList.add('active');
+};
 
 // Abrir/Cerrar Modal
 if (openListModalBtn) {
@@ -537,7 +562,10 @@ listingForm.addEventListener('submit', (e) => {
         size: document.getElementById('itemSize').value,
         price: document.getElementById('itemPrice').value,
         condition: document.getElementById('itemCondition').value,
-        contact: document.getElementById('itemContact').value
+        contact: document.getElementById('itemContact').value,
+        img1: document.getElementById('itemImg1').value,
+        img2: document.getElementById('itemImg2').value,
+        img3: document.getElementById('itemImg3').value
     };
 
     userListings.push(newListing);
@@ -546,7 +574,7 @@ listingForm.addEventListener('submit', (e) => {
     renderMarketplace();
     listingForm.reset();
     listModal.style.display = 'none';
-    alert('¡Tu zapatilla ha sido publicada en el Marketplace!');
+    alert('¡Tu zapatilla ha sido publicada con éxito!');
 });
 
 // Función para eliminar (solo para que el usuario pueda limpiar sus pruebas)
